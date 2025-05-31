@@ -7,7 +7,7 @@ def register_commands(app):
     @app.cli.command("create_admin")
     @with_appcontext
     def create_admin():
-        """Create admin user if not exists."""
+        """Створює адміністратора, якщо він не існує."""
         try:
             if not User.query.filter_by(role=UserRole.ADMIN.value).first():
                 admin = User(
@@ -18,8 +18,8 @@ def register_commands(app):
                 admin.set_password(app.config['ADMIN_PASSWORD'])
                 db.session.add(admin)
                 db.session.commit()
-                click.echo('Admin user created successfully.')
+                click.echo('Адміністратора успішно створено.')
             else:
-                click.echo('Admin user already exists.')
+                click.echo('Адміністратор вже існує.')
         except Exception as e:
-            click.echo(f"Error creating admin user: {e}") 
+            click.echo(f"Помилка створення адміністратора: {e}") 

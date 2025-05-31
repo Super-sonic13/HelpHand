@@ -38,7 +38,7 @@ def list_animals():
     if form.good_with_other_animals.data:
         query = query.filter(Animal.good_with_other_animals == True)
     animals = query.paginate(page=page, per_page=9)
-    return render_template('adoption/list.html', title='Available Animals', animals=animals.items, pagination=animals, form=form)
+    return render_template('adoption/list.html', title='Доступні тварини', animals=animals.items, pagination=animals, form=form)
 
 @bp.route('/adoption/<int:id>')
 def animal_details(id):
@@ -53,7 +53,7 @@ def adopt_animal(id):
     if animal.status != 'available':
         flash('Ця тварина недоступна для усиновлення', 'error')
         return redirect(url_for(ANIMAL_DETAILS_ENDPOINT, id=id))
-    return render_template('adoption/adopt.html', title=f'Adopt {animal.name}', animal=animal)
+    return render_template('adoption/adopt.html', title=f'Всиновити {animal.name}', animal=animal)
 
 @bp.route('/applications')
 @login_required
@@ -67,7 +67,7 @@ def view_application(id):
     if application.user_id != current_user.id and not current_user.is_admin:
         flash('У вас немає прав для перегляду цієї заявки', 'error')
         return redirect(url_for('adoption.my_applications'))
-    return render_template('adoption/application_detail.html', title='Application Details', application=application)
+    return render_template('adoption/application_detail.html', title='Деталі заявки', application=application)
 
 @bp.route('/applications/<int:id>/update', methods=['POST'])
 @login_required
@@ -111,7 +111,7 @@ def add_animal():
         db.session.commit()
         flash('Тварину успішно додано', 'success')
         return redirect(url_for(ANIMAL_DETAILS_ENDPOINT, id=animal.id))
-    return render_template('adoption/form_animal.html', title='Add Animal', form=form, is_edit=False, animal=None)
+    return render_template('adoption/form_animal.html', title='Додати тварину', form=form, is_edit=False, animal=None)
 
 @bp.route('/test-adoption-flow')
 @login_required
@@ -119,13 +119,13 @@ def add_animal():
 def test_adoption_flow():
     try:
         test_animal = Animal(
-            name="Test Pet",
-            species="Dog",
-            breed="Test Breed",
-            age="Young",
-            gender="Male",
-            size="Medium",
-            description="Test animal for adoption flow",
+            name="Тестова тварина",
+            species="Собака",
+            breed="Тестова порода",
+            age="Молода",
+            gender="Самець",
+            size="Середній",
+            description="Тестова тварина для перевірки процесу усиновлення",
             status="available",
             user_id=current_user.id
         )
@@ -136,7 +136,7 @@ def test_adoption_flow():
         db.session.add(adoption)
         db.session.commit()
         contact_info = {
-            'name': 'Test Contact',
+            'name': 'Тестовий контакт',
             'email': current_app.config['MAIL_USERNAME'],
             'phone': '123-456-7890'
         }
@@ -147,7 +147,7 @@ def test_adoption_flow():
         db.session.commit()
         return jsonify({
             'status': 'success',
-            'message': 'Test adoption flow completed successfully. Check your email.',
+            'message': 'Тестовий процес усиновлення успішно завершено. Перевірте вашу електронну пошту.',
             'details': {
                 'animal_id': test_animal.id,
                 'user_id': current_user.id,
@@ -158,7 +158,7 @@ def test_adoption_flow():
         db.session.rollback()
         return jsonify({
             'status': 'error',
-            'message': 'Test failed.'
+            'message': 'Тест не пройшов.'
         }), 500
 
 @bp.route('/animal/<int:id>/edit', methods=['GET', 'POST'])

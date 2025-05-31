@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Панель керування{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1 class="mb-4">Dashboard</h1>
+    <h1 class="mb-4">Панель керування</h1>
     
     <div class="row">
-        <!-- Adoption Applications -->
+        <!-- Заявки на усиновлення -->
         <div class="col-md-6 mb-4">
             <div class="card h-100">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">My Adoption Applications</h5>
+                    <h5 class="card-title mb-0">Мої заявки на усиновлення</h5>
                 </div>
                 <div class="card-body">
                     {% if adoption_applications %}
@@ -22,22 +22,30 @@
                                     <h6 class="mb-1">{{ application.animal.name }}</h6>
                                     <small class="text-muted">{{ application.created_at.strftime('%Y-%m-%d') }}</small>
                                 </div>
-                                <p class="mb-1">Status: <span class="badge bg-{{ 'success' if application.status == 'approved' else 'danger' if application.status == 'rejected' else 'warning' }}">{{ application.status|title }}</span></p>
+                                <p class="mb-1">Статус: <span class="badge bg-{{ 'success' if application.status == 'approved' else 'danger' if application.status == 'rejected' else 'warning' }}">
+                                    {% if application.status == 'pending' %}
+                                        Очікує
+                                    {% elif application.status == 'approved' %}
+                                        Схвалено
+                                    {% else %}
+                                        Відхилено
+                                    {% endif %}
+                                </span></p>
                             </a>
                             {% endfor %}
                         </div>
                     {% else %}
-                        <p class="text-muted">No adoption applications yet.</p>
+                        <p class="text-muted">Поки немає заявок на усиновлення.</p>
                     {% endif %}
                 </div>
             </div>
         </div>
 
-        <!-- Lost & Found Reports -->
+        <!-- Звіти про загублених/знайдених тварин -->
         <div class="col-md-6 mb-4">
             <div class="card h-100">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">My Lost & Found Reports</h5>
+                    <h5 class="card-title mb-0">Мої звіти про загублених/знайдених тварин</h5>
                 </div>
                 <div class="card-body">
                     {% if lost_found_reports %}
@@ -45,18 +53,18 @@
                             {% for report in lost_found_reports %}
                             <a href="{{ url_for('lost_found.view_report', id=report.id) }}" class="list-group-item list-group-item-action">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1">{{ report.animal_type|title }} - {{ report.report_type|title }}</h6>
+                                    <h6 class="mb-1">{{ report.animal_type|title }} - {{ 'Загублена' if report.report_type == 'lost' else 'Знайдена' }}</h6>
                                     <small class="text-muted">{{ report.created_at.strftime('%Y-%m-%d') }}</small>
                                 </div>
-                                <p class="mb-1">Location: {{ report.location }}</p>
+                                <p class="mb-1">Місце: {{ report.location }}</p>
                                 <small class="text-{{ 'success' if report.is_active else 'muted' }}">
-                                    {{ 'Active' if report.is_active else 'Closed' }}
+                                    {{ 'Активний' if report.is_active else 'Закритий' }}
                                 </small>
                             </a>
                             {% endfor %}
                         </div>
                     {% else %}
-                        <p class="text-muted">No lost & found reports yet.</p>
+                        <p class="text-muted">Поки немає звітів про загублених/знайдених тварин.</p>
                     {% endif %}
                 </div>
             </div>
@@ -64,39 +72,39 @@
     </div>
 
     {% if current_user.is_admin %}
-    <!-- Admin Section -->
+    <!-- Адмін-панель -->
     <div class="row mt-4">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Admin Dashboard</h5>
+                    <h5 class="card-title mb-0">Панель адміністратора</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card bg-light">
                                 <div class="card-body">
-                                    <h6 class="card-title">Pending Applications</h6>
+                                    <h6 class="card-title">Заявки, що очікують</h6>
                                     <p class="card-text display-4">{{ pending_applications_count }}</p>
-                                    <a href="{{ url_for('admin_panel.list_applications', status='pending') }}" class="btn btn-primary btn-sm">View All</a>
+                                    <a href="{{ url_for('admin_panel.list_applications', status='pending') }}" class="btn btn-primary btn-sm">Переглянути всі</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="card bg-light">
                                 <div class="card-body">
-                                    <h6 class="card-title">Active Animals</h6>
+                                    <h6 class="card-title">Доступні тварини</h6>
                                     <p class="card-text display-4">{{ available_animals_count }}</p>
-                                    <a href="{{ url_for('admin_panel.list_animals') }}" class="btn btn-primary btn-sm">Manage Animals</a>
+                                    <a href="{{ url_for('admin_panel.list_animals') }}" class="btn btn-primary btn-sm">Керувати тваринами</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="card bg-light">
                                 <div class="card-body">
-                                    <h6 class="card-title">Active Reports</h6>
+                                    <h6 class="card-title">Активні звіти</h6>
                                     <p class="card-text display-4">{{ active_reports_count }}</p>
-                                    <a href="{{ url_for('admin_panel.list_reports') }}" class="btn btn-primary btn-sm">View Reports</a>
+                                    <a href="{{ url_for('admin_panel.list_reports') }}" class="btn btn-primary btn-sm">Переглянути звіти</a>
                                 </div>
                             </div>
                         </div>

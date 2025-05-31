@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container-fluid py-4">
-    <!-- Hero Section -->
+    <!-- Заголовок сторінки -->
     <div class="row mb-4">
         <div class="col-12 text-center">
             <h1 class="display-4 fw-bold text-primary">Загублені та знайдені тварини</h1>
@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <!-- Filters Section -->
+    <!-- Фільтри -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card shadow-sm">
@@ -65,7 +65,7 @@
     </div>
 
 
-    <!-- Reports Grid -->
+    <!-- Список оголошень -->
     <div class="row">
         {% if reports %}
             <div class="col-12">
@@ -108,7 +108,7 @@
                     {% endfor %}
                 </div>
 
-                <!-- Pagination -->
+                <!-- Пагінація -->
                 {% if pagination.pages > 1 %}
                     <nav class="mt-4">
                         <ul class="pagination justify-content-center">

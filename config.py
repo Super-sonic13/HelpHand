@@ -56,6 +56,6 @@ class Config:
         os.makedirs(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance'), exist_ok=True)
         os.makedirs(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'media', 'uploads'), exist_ok=True)
         os.makedirs(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'flask_session'), exist_ok=True)
-    
+
     # Пагінація
     ITEMS_PER_PAGE = 12 

@@ -3,23 +3,23 @@
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <!-- Back Button -->
+            <!-- Кнопка повернення -->
             <div class="mb-4">
                 <a href="{{ url_for('lost_found.view_report', id=report.id) }}" class="btn btn-outline-primary">
                     <i class="fas fa-arrow-left me-2"></i>Назад до оголошення
                 </a>
             </div>
 
-            <!-- Main Card -->
+            <!-- Головна картка -->
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">Відповідь на оголошення</h4>
                 </div>
                 <div class="card-body p-4">
-                    <!-- Report Summary -->
+                    <!-- Короткий опис звіту -->
                     {% include 'lost_found/_report_card.html' %}
 
-                    <!-- Response Form -->
+                    <!-- Форма відповіді -->
                     <form method="POST">
                         {{ form.hidden_tag() }}
                         <div class="mb-4">

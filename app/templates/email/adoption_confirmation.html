@@ -15,49 +15,49 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Adoption Application Confirmation</h1>
+            <h1>Підтвердження заявки на адопцію</h1>
         </div>
         
         <div class="content">
-            <p>Dear {{ user.username }},</p>
+            <p>Шановний(а) {{ user.username }},</p>
             
-            <p>Thank you for your interest in adopting {{ animal.name }}! We have received your adoption application and are excited to help you through this process.</p>
+            <p>Дякуємо за ваш інтерес до усиновлення {{ animal.name }}! Ми отримали вашу заявку на адопцію і раді допомогти вам у цьому процесі.</p>
             
             <div class="pet-info">
-                <h2>Pet Information:</h2>
+                <h2>Інформація про тварину:</h2>
                 <ul>
-                    <li><strong>Name:</strong> {{ animal.name }}</li>
-                    <li><strong>Species:</strong> {{ animal.species }}</li>
-                    <li><strong>Breed:</strong> {{ animal.breed or 'Mixed/Unknown' }}</li>
-                    <li><strong>Age:</strong> {{ animal.age }}</li>
-                    <li><strong>Gender:</strong> {{ animal.gender }}</li>
+                    <li><strong>Кличка:</strong> {{ animal.name }}</li>
+                    <li><strong>Вид:</strong> {{ animal.species }}</li>
+                    <li><strong>Порода:</strong> {{ animal.breed or 'Мішана/Невідома' }}</li>
+                    <li><strong>Вік:</strong> {{ animal.age }}</li>
+                    <li><strong>Стать:</strong> {{ animal.gender }}</li>
                 </ul>
             </div>
             
             <div class="contact-info">
-                <h2>Contact Information:</h2>
-                <p>You can contact the shelter staff or current caretaker using the following information:</p>
+                <h2>Контактна інформація:</h2>
+                <p>Ви можете зв'язатися з персоналом притулку або поточним опікуном, використовуючи наступну інформацію:</p>
                 <ul>
-                    <li><strong>Name:</strong> {{ contact_name }}</li>
+                    <li><strong>Ім'я:</strong> {{ contact_name }}</li>
                     <li><strong>Email:</strong> {{ contact_email }}</li>
                     {% if contact_phone %}
-                    <li><strong>Phone:</strong> {{ contact_phone }}</li>
+                    <li><strong>Телефон:</strong> {{ contact_phone }}</li>
                     {% endif %}
                 </ul>
             </div>
             
-            <p>Next Steps:</p>
+            <p>Наступні кроки:</p>
             <ol>
-                <li>The shelter staff will review your application</li>
-                <li>We will contact you to schedule a meet-and-greet with {{ animal.name }}</li>
-                <li>If everything goes well, we'll proceed with the adoption process</li>
+                <li>Персонал притулку перегляне вашу заявку</li>
+                <li>Ми зв'яжемося з вами, щоб запланувати зустріч з {{ animal.name }}</li>
+                <li>Якщо все пройде добре, ми продовжимо процес адопції</li>
             </ol>
             
-            <p>If you have any questions, please don't hesitate to contact us using the information above.</p>
+            <p>Якщо у вас є питання, будь ласка, не соромтеся зв'язатися з нами, використовуючи інформацію вище.</p>
         </div>
         
         <div class="footer">
-            <p>This is an automated message. Please do not reply to this email.</p>
+            <p>Це автоматичне повідомлення. Будь ласка, не відповідайте на цей лист.</p>
         </div>
     </div>
 </body>

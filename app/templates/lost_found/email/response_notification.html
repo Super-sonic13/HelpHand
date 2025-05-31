@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>New Response to Your Report</title>
+    <title>Нова відповідь на ваше оголошення</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,32 +44,32 @@
 </head>
 <body>
     <div class="header">
-        <h1>New Response to Your Report</h1>
+        <h1>Нова відповідь на ваше оголошення</h1>
     </div>
     
     <div class="content">
-        <p>Dear {{ author.username }},</p>
+        <p>Шановний(а) {{ author.username }},</p>
         
-        <p>Someone has responded to your lost/found report about {{ report.animal_name }}!</p>
+        <p>Хтось відповів на ваше оголошення про {{ report.animal_name }}!</p>
         
-        <h2>Report Details:</h2>
+        <h2>Деталі оголошення:</h2>
         <ul>
-            <li><strong>Responder:</strong> {{ responder.username }}</li>
-            <li><strong>Report ID:</strong> {{ report.id }}</li>
-            <li><strong>Report Type:</strong> {{ 'Lost' if report.is_lost else 'Found' }}</li>
-            <li><strong>Animal:</strong> {{ report.animal_name }}</li>
-            <li><strong>Location:</strong> {{ report.location }}</li>
+            <li><strong>Відповідач:</strong> {{ responder.username }}</li>
+            <li><strong>ID оголошення:</strong> {{ report.id }}</li>
+            <li><strong>Тип оголошення:</strong> {{ 'Загублено' if report.is_lost else 'Знайдено' }}</li>
+            <li><strong>Тварина:</strong> {{ report.animal_name }}</li>
+            <li><strong>Місце:</strong> {{ report.location }}</li>
         </ul>
         
-        <p>You can view the full report and contact the responder by clicking the button below:</p>
+        <p>Ви можете переглянути повне оголошення та зв'язатися з відповідачем, натиснувши кнопку нижче:</p>
         
         <a href="{{ url_for('lost_found.view_report', id=report.id, _external=True) }}" class="button">
-            View Report
+            Переглянути оголошення
         </a>
     </div>
     
     <div class="footer">
-        <p>Best regards,<br>HelpHand Team</p>
+        <p>З повагою,<br>Команда HelpHand</p>
     </div>
 </body>
 </html> 

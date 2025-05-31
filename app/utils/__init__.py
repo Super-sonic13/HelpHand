@@ -8,21 +8,21 @@ def send_async_email(app, msg):
         mail.send(msg)
 
 def send_email(subject, sender, recipients, text_body, html_body):
-    """Send an email asynchronously."""
+    """Надсилає email асинхронно."""
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
     Thread(target=send_async_email, args=(current_app._get_current_object(), msg)).start()
 
 def send_found_notification(report, responder):
-    """Send notification email to report author when someone responds."""
+    """Надсилає email-сповіщення автору звіту, коли хтось відповідає."""
     author = report.author
     if not author.email:
         return False
 
     try:
         send_email(
-            subject='New Response to Your Report',
+            subject='Нова відповідь на ваше оголошення',
             sender=current_app.config['MAIL_DEFAULT_SENDER'],
             recipients=[author.email],
             text_body=render_template('lost_found/email/response_notification.txt',

@@ -80,5 +80,5 @@ class LostFoundSearchForm(FlaskForm):
     submit = SubmitField('Пошук') 
 
 class ReportResponseForm(FlaskForm):
-    message = TextAreaField('Message', validators=[DataRequired()])
-    submit = SubmitField('Send Response') 
+    message = TextAreaField('Повідомлення', validators=[DataRequired()])
+    submit = SubmitField('Надіслати відповідь') 

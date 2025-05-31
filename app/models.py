@@ -83,7 +83,7 @@ class User(UserMixin, db.Model):
         return f'<User {self.username} ({self.role})>'
 
     def new_responses_count(self):
-        """Return the count of unread responses to user's reports."""
+        """Повертає кількість непрочитаних відповідей на звіти користувача."""
         return ReportResponse.query.join(LostFoundReport).filter(
             LostFoundReport.user_id == self.id,
             ReportResponse.timestamp > (self.last_response_read_time or datetime.min),
@@ -91,7 +91,7 @@ class User(UserMixin, db.Model):
         ).count()
 
     def has_new_responses(self):
-        """Check if user has new responses and hasn't dismissed the notification."""
+        """Перевіряє, чи є у користувача нові відповіді та чи не відхилив він сповіщення."""
         return (self.new_responses_count() > 0 and
                 (not self.last_notification_dismissed or
                  self.last_notification_dismissed < self.last_response_read_time))

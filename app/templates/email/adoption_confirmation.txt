@@ -1,30 +1,30 @@
-Dear {{ user.username }},
+Шановний(а) {{ user.username }},
 
-Thank you for your interest in adopting {{ animal.name }}! We have received your adoption application and are excited to help you through this process.
+Дякуємо за ваш інтерес до усиновлення {{ animal.name }}! Ми отримали вашу заявку на адопцію і раді допомогти вам у цьому процесі.
 
-Pet Information:
-- Name: {{ animal.name }}
-- Species: {{ animal.species }}
-- Breed: {{ animal.breed or 'Mixed/Unknown' }}
-- Age: {{ animal.age }}
-- Gender: {{ animal.gender }}
+Інформація про тварину:
+- Кличка: {{ animal.name }}
+- Вид: {{ animal.species }}
+- Порода: {{ animal.breed or 'Мішана/Невідома' }}
+- Вік: {{ animal.age }}
+- Стать: {{ animal.gender }}
 
-Contact Information:
-You can contact the shelter staff or current caretaker using the following information:
-- Name: {{ contact_name }}
+Контактна інформація:
+Ви можете зв'язатися з персоналом притулку або поточним опікуном, використовуючи наступну інформацію:
+- Ім'я: {{ contact_name }}
 - Email: {{ contact_email }}
 {% if contact_phone %}
-- Phone: {{ contact_phone }}
+- Телефон: {{ contact_phone }}
 {% endif %}
 
-Next Steps:
-1. The shelter staff will review your application
-2. We will contact you to schedule a meet-and-greet with {{ animal.name }}
-3. If everything goes well, we'll proceed with the adoption process
+Наступні кроки:
+1. Персонал притулку перегляне вашу заявку
+2. Ми зв'яжемося з вами, щоб запланувати зустріч з {{ animal.name }}
+3. Якщо все пройде добре, ми продовжимо процес адопції
 
-If you have any questions, please don't hesitate to contact us using the information above.
+Якщо у вас є питання, будь ласка, не соромтеся зв'язатися з нами, використовуючи інформацію вище.
 
-Best regards,
-Animal Lover Team
+З повагою,
+Команда "Любителі тварин"
 
-Note: This is an automated message. Please do not reply to this email. 
+Примітка: Це автоматичне повідомлення. Будь ласка, не відповідайте на цей лист. 

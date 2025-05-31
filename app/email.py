@@ -20,7 +20,7 @@ def send_email(subject, sender, recipients, text_body, html_body=None):
 
 def send_notification_email(to, subject, template):
     """
-    Helper function to send notification emails using templates
+    Допоміжна функція для надсилання сповіщень через email з використанням шаблонів
     """
     send_email(
         subject=subject,
@@ -32,14 +32,14 @@ def send_notification_email(to, subject, template):
 
 def send_adoption_notification(user, animal, contact_info):
     """
-    Send an adoption application confirmation email to the user.
+    Надсилає підтвердження заявки на усиновлення користувачу.
     
-    Args:
-        user: The User model instance of the applicant
-        animal: The Animal model instance being adopted
-        contact_info: dict containing contact details (name, email, phone)
+    Аргументи:
+        user: Екземпляр моделі User заявника
+        animal: Екземпляр моделі Animal, якого усиновлюють
+        contact_info: словник з контактними даними (ім'я, email, телефон)
     """
-    subject = f"Your Adoption Application for {animal.name} Has Been Received"
+    subject = f"Вашу заявку на усиновлення {animal.name} отримано"
     
     text_body = render_template(
         'email/adoption_confirmation.txt',

@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Show success message
+                    // Показати повідомлення про успіх
                     showAlert('success', data.message);
                     if (data.redirect) {
                         window.location.href = data.redirect;
@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
-                showAlert('danger', 'An error occurred. Please try again.');
-                console.error('Error:', error);
+                showAlert('danger', 'Сталася помилка. Будь ласка, спробуйте ще раз.');
+                console.error('Помилка:', error);
             });
         });
     });
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         alertDiv.role = 'alert';
         alertDiv.innerHTML = `
             ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрити"></button>
         `;
         
         const container = document.querySelector('.container');

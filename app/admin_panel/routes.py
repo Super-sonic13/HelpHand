@@ -9,7 +9,7 @@ from app.admin_panel import bp
 @login_required
 @admin_required
 def index():
-    return render_template('admin_panel/index.html', title='Admin Panel')
+    return render_template('admin_panel/index.html', title='Панель адміністратора')
 
 @bp.route('/users')
 @login_required
@@ -51,11 +51,11 @@ def update_user_role(id):
     role = request.form.get('role')
     
     if role not in [r.value for r in UserRole]:
-        return jsonify({'error': 'Invalid role'}), 400
+        return jsonify({'error': 'Невірна роль'}), 400
         
     user.role = role
     db.session.commit()
-    return jsonify({'message': 'Role updated successfully'})
+    return jsonify({'message': 'Роль успішно оновлено'})
 
 @bp.route('/application/<int:id>/status', methods=['POST'])
 @login_required
@@ -65,7 +65,7 @@ def update_application_status(id):
     status = request.form.get('status')
     
     if status not in ['pending', 'approved', 'rejected']:
-        return jsonify({'error': 'Invalid status'}), 400
+        return jsonify({'error': 'Невірний статус'}), 400
         
     application.status = status
     if status == 'approved':
@@ -74,7 +74,7 @@ def update_application_status(id):
         application.animal.status = 'available'
         
     db.session.commit()
-    return jsonify({'message': 'Application status updated successfully'})
+    return jsonify({'message': 'Статус заявки успішно оновлено'})
 
 @bp.route('/user/<int:id>/delete', methods=['POST'])
 @login_required

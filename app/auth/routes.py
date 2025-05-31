@@ -18,7 +18,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password', 'error')
+            flash('Невірне ім\'я користувача або пароль', 'error')
             return redirect(url_for(AUTH_LOGIN_ENDPOINT))
         if not user.is_active:
             flash('Ваш акаунт заблоковано. Зверніться до адміністратора.', 'error')
@@ -28,7 +28,7 @@ def login():
         if not next_page or not next_page.startswith('/'):
             next_page = url_for(MAIN_INDEX_ENDPOINT)
         return redirect(next_page)
-    return render_template('auth/login.html', title='Sign In', form=form)
+    return render_template('auth/login.html', title='Вхід', form=form)
 
 @bp.route('/logout')
 def logout():
@@ -53,9 +53,9 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!', 'success')
+        flash('Вітаємо! Ви успішно зареєструвались!', 'success')
         return redirect(url_for(AUTH_LOGIN_ENDPOINT))
-    return render_template('auth/register.html', title='Register', form=form) 
+    return render_template('auth/register.html', title='Реєстрація', form=form)
 
 @bp.route('/dismiss-notification', methods=['POST'])
 @login_required

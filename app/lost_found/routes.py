@@ -15,7 +15,7 @@ LOST_FOUND_VIEW_REPORT = 'lost_found.view_report'
 @bp.route('/')
 def index():
     reports = LostFoundReport.query.filter_by(is_active=True).all()
-    return render_template('lost_found/index.html', title='Lost & Found', reports=reports)
+    return render_template('lost_found/index.html', title='Загублені та знайдені', reports=reports)
 
 
 @bp.route('/add', methods=['GET', 'POST'])
@@ -144,13 +144,13 @@ def list_reports():
         query = query.filter(LostFoundReport.location.ilike(f'%{location}%'))
     
     reports = query.order_by(LostFoundReport.created_at.desc()).paginate(page=page, per_page=10)
-    return render_template('lost_found/list.html', title='Lost & Found Reports', reports=reports, pagination=reports)
+    return render_template('lost_found/list.html', title='Загублені та знайдені тварини', reports=reports, pagination=reports)
 
 
 @bp.route('/reports/<int:id>')
 def view_report(id):
     report = LostFoundReport.query.get_or_404(id)
-    return render_template('lost_found/view.html', title=f'Report #{report.id}',
+    return render_template('lost_found/view.html', title=f'Оголошення #{report.id}',
                          report=report)
 
 
@@ -169,7 +169,7 @@ def delete_report(id):
 
     db.session.delete(report)
     db.session.commit()
-    flash('Report deleted successfully!')
+    flash('Оголошення успішно видалено!')
     return redirect(url_for('lost_found.list_reports'))
 
 @bp.route('/reports/<int:id>/resolve', methods=['POST'])
@@ -181,7 +181,7 @@ def resolve_report(id):
 
     report.is_active = False
     db.session.commit()
-    flash('Report marked as resolved!')
+    flash('Оголошення позначено як вирішене!')
     return redirect(url_for(LOST_FOUND_VIEW_REPORT, id=report.id))
 
 @bp.route('/report/<int:id>/respond', methods=['GET', 'POST'])
@@ -192,11 +192,11 @@ def respond_to_report(id):
     report = LostFoundReport.query.get_or_404(id)
     
     if report.user_id == current_user.id:
-        flash('You cannot respond to your own report.')
+        flash('Ви не можете відповідати на своє оголошення.')
         return redirect(url_for(LOST_FOUND_VIEW_REPORT, id=id))
     
     if not report.is_active:
-        flash('This report has been resolved.')
+        flash('Це оголошення вже вирішене.')
         return redirect(url_for(LOST_FOUND_VIEW_REPORT, id=id))
     
     form = ReportResponseForm()

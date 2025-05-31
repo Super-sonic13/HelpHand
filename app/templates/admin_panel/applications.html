@@ -2,18 +2,18 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1>Adoption Applications</h1>
+    <h1>Заявки на адопцію</h1>
     
     <div class="table-responsive mt-4">
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Animal</th>
-                    <th>Applicant</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Actions</th>
+                    <th>Тварина</th>
+                    <th>Заявник</th>
+                    <th>Статус</th>
+                    <th>Дата</th>
+                    <th>Дії</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,7 +30,13 @@
                         <select class="form-select form-select-sm status-select" data-application-id="{{ application.id }}">
                             {% for status in ['pending', 'approved', 'rejected'] %}
                             <option value="{{ status }}" {% if application.status == status %}selected{% endif %}>
-                                {{ status|title }}
+                                {% if status == 'pending' %}
+                                    Очікує
+                                {% elif status == 'approved' %}
+                                    Затверджено
+                                {% else %}
+                                    Відхилено
+                                {% endif %}
                             </option>
                             {% endfor %}
                         </select>
@@ -38,7 +44,7 @@
                     <td>{{ application.created_at.strftime('%Y-%m-%d') }}</td>
                     <td>
                         <a href="{{ url_for('adoption.view_application', id=application.id) }}" class="btn btn-sm btn-info">
-                            View Details
+                            Деталі
                         </a>
                     </td>
                 </tr>
@@ -47,12 +53,12 @@
         </table>
     </div>
     
-    <!-- Pagination -->
-    <nav aria-label="Page navigation">
+    <!-- Пагінація -->
+    <nav aria-label="Навігація по сторінках">
         <ul class="pagination justify-content-center">
             {% if applications.has_prev %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('admin_panel.applications', page=applications.prev_num) }}">Previous</a>
+                <a class="page-link" href="{{ url_for('admin_panel.applications', page=applications.prev_num) }}">Попередня</a>
             </li>
             {% endif %}
             
@@ -68,7 +74,7 @@
             
             {% if applications.has_next %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('admin_panel.applications', page=applications.next_num) }}">Next</a>
+                <a class="page-link" href="{{ url_for('admin_panel.applications', page=applications.next_num) }}">Наступна</a>
             </li>
             {% endif %}
         </ul>
@@ -92,15 +98,15 @@ document.querySelectorAll('.status-select').forEach(select => {
         .then(response => response.json())
         .then(data => {
             if (data.message) {
-                alert('Status updated successfully');
+                alert('Статус успішно оновлено');
             } else {
-                alert('Error updating status');
+                alert('Помилка оновлення статусу');
                 this.value = this.dataset.originalStatus;
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            alert('Error updating status');
+            console.error('Помилка:', error);
+            alert('Помилка оновлення статусу');
             this.value = this.dataset.originalStatus;
         });
     });

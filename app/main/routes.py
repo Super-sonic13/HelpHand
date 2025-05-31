@@ -12,15 +12,15 @@ MAIN_DASHBOARD_ENDPOINT = 'main.dashboard'
 @bp.route('/')
 @bp.route('/index')
 def index():
-    return render_template('main/index.html', title='Home')
+    return render_template('main/index.html', title='Головна')
 
 @bp.route('/about')
 def about():
-    return render_template('main/about.html', title='About Us')
+    return render_template('main/about.html', title='Про нас')
 
 @bp.route('/contact')
 def contact():
-    return render_template('main/contact.html', title='Contact Us')
+    return render_template('main/contact.html', title='Контакти')
 
 @bp.route('/dashboard')
 @login_required
@@ -35,7 +35,7 @@ def dashboard():
         my_applications = AdoptionApplication.query.join(Animal).filter(Animal.user_id == current_user.id).all()
     return render_template(
         'main/dashboard.html',
-                         title='Dashboard',
+                         title='Панель керування',
                          user_animals=user_animals,
         adoption_applications=adoption_applications,
         lost_found_reports=lost_found_reports,

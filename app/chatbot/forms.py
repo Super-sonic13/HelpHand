@@ -3,8 +3,8 @@ from wtforms import StringField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, Length
 
 class ChatMessageForm(FlaskForm):
-    message = StringField('Message', validators=[
+    message = StringField('Повідомлення', validators=[
         DataRequired(),
         Length(min=1, max=500)
     ])
-    submit = SubmitField('Send') 
+    submit = SubmitField('Надіслати') 

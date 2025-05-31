@@ -1,15 +1,15 @@
-Dear {{ author.username }},
+Шановний(а) {{ author.username }},
 
-Someone has responded to your lost/found report about {{ report.animal_name }}!
+Хтось відповів на ваше оголошення про {{ report.animal_name }}!
 
-Responder: {{ responder.username }}
-Report ID: {{ report.id }}
-Report Type: {{ 'Lost' if report.is_lost else 'Found' }}
-Animal: {{ report.animal_name }}
-Location: {{ report.location }}
+Відповідач: {{ responder.username }}
+ID оголошення: {{ report.id }}
+Тип оголошення: {{ 'Загублено' if report.is_lost else 'Знайдено' }}
+Тварина: {{ report.animal_name }}
+Місце: {{ report.location }}
 
-You can view the full report and contact the responder here:
+Ви можете переглянути повне оголошення та зв'язатися з відповідачем за посиланням:
 {{ url_for('lost_found.view_report', id=report.id, _external=True) }}
 
-Best regards,
-HelpHand Team 
+З повагою,
+Команда HelpHand 
