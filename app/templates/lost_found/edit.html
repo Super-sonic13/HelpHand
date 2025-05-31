@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Back Button -->
+            <div class="mb-4">
+                <a href="{{ url_for('lost_found.view_report', id=report.id) }}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Назад до оголошення
+                </a>
+            </div>
+
+            <!-- Main Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Редагувати оголошення</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        {% include 'lost_found/_form_fields.html' %}
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-save me-2"></i>Зберегти зміни
+                            </button>
+                            <a href="{{ url_for('lost_found.view_report', id=report.id) }}" class="btn btn-outline-secondary px-4">
+                                Скасувати
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Leaflet CSS and JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize map
+    var map = L.map('map').setView([49.8397, 24.0297], 13); // Default to Lviv coordinates
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    var marker = null;
+    var locationInput = document.getElementById('location-input');
+
+    function setLocationInputValue(value) {
+        locationInput.value = value;
+    }
+    function handleReverseGeocode(e) {
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${e.latlng.lat}&lon=${e.latlng.lng}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.display_name) {
+                    setLocationInputValue(data.display_name);
+                } else {
+                    setLocationInputValue(`${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`);
+                }
+            })
+            .catch(() => {
+                setLocationInputValue(`${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`);
+            });
+    }
+    function handleMapClick(e) {
+        if (marker) {
+            map.removeLayer(marker);
+        }
+        marker = L.marker(e.latlng).addTo(map);
+        handleReverseGeocode(e);
+    }
+    function handleGeocodeResult(data) {
+        if (data.length > 0) {
+            var lat = parseFloat(data[0].lat);
+            var lon = parseFloat(data[0].lon);
+            map.setView([lat, lon], 13);
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker([lat, lon]).addTo(map);
+        } else {
+            locationInput.classList.add('is-invalid');
+            setTimeout(() => locationInput.classList.remove('is-invalid'), 2000);
+        }
+    }
+    function handleGeocodeError(error) {
+        console.error('Geocoding error:', error);
+        locationInput.classList.add('is-invalid');
+        setTimeout(() => locationInput.classList.remove('is-invalid'), 2000);
+    }
+    function geocodeAddress(address) {
+        locationInput.classList.add('is-loading');
+        fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))
+            .then(response => response.json())
+            .then(handleGeocodeResult)
+            .catch(handleGeocodeError)
+            .finally(() => locationInput.classList.remove('is-loading'));
+    }
+    let timeoutId;
+    locationInput.addEventListener('input', function() {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            var address = this.value;
+            if (address) {
+                geocodeAddress(address);
+            }
+        }, 500);
+    });
+    map.on('click', handleMapClick);
+    map.on('error', function(e) {
+        console.error('Map error:', e);
+        alert('Помилка завантаження карти. Будь ласка, перезавантажте сторінку.');
+    });
+});
+</script>
+
+<style>
+.is-loading {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23999" d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    padding-right: 35px;
+}
+
+#map {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+}
+
+.leaflet-container {
+    z-index: 1;
+}
+</style>
+{% endblock %} 

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Забронювати тварину{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Забронювати тварину</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            {{ form.full_name.label(class="form-label") }}
+                            {{ form.full_name(class="form-control") }}
+                            {% for error in form.full_name.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control") }}
+                            {% for error in form.email.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.phone.label(class="form-label") }}
+                            {{ form.phone(class="form-control") }}
+                            {% for error in form.phone.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.address.label(class="form-label") }}
+                            {{ form.address(class="form-control") }}
+                            {% for error in form.address.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                {{ form.city.label(class="form-label") }}
+                                {{ form.city(class="form-control") }}
+                                {% for error in form.city.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col">
+                                {{ form.state.label(class="form-label") }}
+                                {{ form.state(class="form-control") }}
+                                {% for error in form.state.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col">
+                                {{ form.postal_code.label(class="form-label") }}
+                                {{ form.postal_code(class="form-control") }}
+                                {% for error in form.postal_code.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            {{ form.housing_type.label(class="form-label") }}
+                            {{ form.housing_type(class="form-select") }}
+                            {% for error in form.housing_type.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.previous_pets.label(class="form-label") }}
+                            {{ form.previous_pets(class="form-control", rows=3) }}
+                            {% for error in form.previous_pets.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.current_pets.label(class="form-label") }}
+                            {{ form.current_pets(class="form-control", rows=3) }}
+                            {% for error in form.current_pets.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.vet_reference.label(class="form-label") }}
+                            {{ form.vet_reference(class="form-control") }}
+                            {% for error in form.vet_reference.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.adoption_reason.label(class="form-label") }}
+                            {{ form.adoption_reason(class="form-control", rows=3) }}
+                            {% for error in form.adoption_reason.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.care_plan.label(class="form-label") }}
+                            {{ form.care_plan(class="form-control", rows=3) }}
+                            {% for error in form.care_plan.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="text-center">
+                            <a href="{{ url_for('adoption.animal_details', id=animal.id) }}" class="btn btn-secondary me-2">Скасувати</a>
+                            {{ form.submit(class="btn btn-success") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

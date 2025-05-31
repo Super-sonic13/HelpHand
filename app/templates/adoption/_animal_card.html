@@ -1,0 +1,10 @@
+<!-- Картка тварини для adoption/details.html -->
+<ul class="list-group list-group-flush mt-3">
+    <li class="list-group-item"><strong>Вік:</strong> {{ age_ua.get(animal.age, animal.age) }}</li>
+    {% if animal.breed %}<li class="list-group-item"><strong>Порода:</strong> {{ animal.breed }}</li>{% endif %}
+    {% if animal.gender %}<li class="list-group-item"><strong>Стать:</strong> {{ gender_ua.get(animal.gender, animal.gender) }}</li>{% endif %}
+    {% if animal.size %}<li class="list-group-item"><strong>Розмір:</strong> {{ size_ua.get(animal.size, animal.size) }}</li>{% endif %}
+    {% if animal.good_with_children is not none %}<li class="list-group-item"><strong>Добре з дітьми:</strong> {{ 'Так' if animal.good_with_children else 'Ні' }}</li>{% endif %}
+    {% if animal.good_with_other_animals is not none %}<li class="list-group-item"><strong>Добре з іншими тваринами:</strong> {{ 'Так' if animal.good_with_other_animals else 'Ні' }}</li>{% endif %}
+    {% if animal.description %}<li class="list-group-item"><strong>Опис:</strong> {{ animal.description }}</li>{% endif %}
+</ul> 

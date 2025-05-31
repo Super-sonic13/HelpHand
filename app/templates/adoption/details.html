@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}{{ animal.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mb-4">
+            {% include 'adoption/_animal_card.html' %}
+                <div class="card-body">
+                    {% if animal.name %}<h1 class="card-title">{{ animal.name }}</h1>{% endif %}
+                    {% set age_ua = {'0-1': '0-1 рік', '1-3': '1-3 роки', '3-5': '3-5 років', '5-8': '5-8 років', '8+': '8+ років', 'puppy': 'Щеня/Кошеня', 'young': 'Молодий', 'adult': 'Дорослий', 'senior': 'Похилого віку'} %}
+                    {% set gender_ua = {'male': 'Самець', 'female': 'Самка'} %}
+                    {% set size_ua = {'small': 'Малий', 'medium': 'Середній', 'large': 'Великий'} %}
+                    {% set status_map = {
+                        'available': ('Вільна', 'bg-success'),
+                        'reserved': ('Заброньовано', 'bg-warning text-dark'),
+                        'adopted': ('Прилаштована', 'bg-danger')
+                    } %}
+                    {% set status_label, status_class = status_map.get(animal.status, ('Невідомо', 'bg-secondary')) %}
+                    <span class="badge {{ status_class }} mb-3">{{ status_label }}</span>
+                    <ul class="list-group list-group-flush mt-3">
+                        <li class="list-group-item"><strong>Вік:</strong> {{ age_ua.get(animal.age, animal.age) }}</li>
+                        {% if animal.breed %}<li class="list-group-item"><strong>Порода:</strong> {{ animal.breed }}</li>{% endif %}
+                        {% if animal.gender %}<li class="list-group-item"><strong>Стать:</strong> {{ gender_ua.get(animal.gender, animal.gender) }}</li>{% endif %}
+                        {% if animal.size %}<li class="list-group-item"><strong>Розмір:</strong> {{ size_ua.get(animal.size, animal.size) }}</li>{% endif %}
+                        {% if animal.good_with_children is not none %}<li class="list-group-item"><strong>Добре з дітьми:</strong> {{ 'Так' if animal.good_with_children else 'Ні' }}</li>{% endif %}
+                        {% if animal.good_with_other_animals is not none %}<li class="list-group-item"><strong>Добре з іншими тваринами:</strong> {{ 'Так' if animal.good_with_other_animals else 'Ні' }}</li>{% endif %}
+                        {% if animal.description %}<li class="list-group-item"><strong>Опис:</strong> {{ animal.description }}</li>{% endif %}
+                </ul>
+            <div class="mt-4">
+                        {% if current_user.is_authenticated and current_user.id == animal.user_id %}
+                            <a href="{{ url_for('adoption.edit_animal', id=animal.id) }}" class="btn btn-warning">Редагувати</a>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Видалити</button>
+                            <!-- Модальне вікно для підтвердження видалення -->
+                            <div class="modal fade" id="deleteModal" tabindex="-1">
+                              <div class="modal-dialog"><div class="modal-content">
+                                <div class="modal-header"><h5 class="modal-title">Підтвердження видалення</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">Ви впевнені, що хочете видалити цю тварину?</div>
+                                <div class="modal-footer">
+                                  <form method="POST" action="{{ url_for('adoption.delete_animal', id=animal.id) }}">
+                                    <button type="submit" class="btn btn-danger">Видалити</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                        </form>
+            </div>
+                              </div></div>
+        </div>
+                        {% elif current_user.is_authenticated and animal.status == 'available' %}
+                            <a href="{{ url_for('adoption.reserve_animal', id=animal.id) }}" class="btn btn-success">Усиновити</a>
+                        {% endif %}
+    </div>
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

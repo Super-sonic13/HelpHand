@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Звіти - Адмін панель{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Звіти (Lost & Found)</h1>
+    {% if reports.items %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Тип</th>
+                        <th>Тварина</th>
+                        <th>Порода</th>
+                        <th>Локація</th>
+                        <th>Статус</th>
+                        <th>Дата</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in reports.items %}
+                    <tr>
+                        <td>{{ report.id }}</td>
+                        <td>{{ 'Загублена' if report.report_type == 'lost' else 'Знайдена' }}</td>
+                        <td>{{ report.animal_type }}</td>
+                        <td>{{ report.breed }}</td>
+                        <td>{{ report.location }}</td>
+                        <td>{{ 'Активний' if report.is_active else 'Закритий' }}</td>
+                        <td>{{ report.last_seen_date.strftime('%d.%m.%Y') if report.last_seen_date else '' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>Немає звітів для відображення.</p>
+    {% endif %}
+</div>
+{% endblock %} 

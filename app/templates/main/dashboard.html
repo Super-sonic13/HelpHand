@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Dashboard</h1>
+    
+    <div class="row">
+        <!-- Adoption Applications -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">My Adoption Applications</h5>
+                </div>
+                <div class="card-body">
+                    {% if adoption_applications %}
+                        <div class="list-group">
+                            {% for application in adoption_applications %}
+                            <a href="{{ url_for('adoption.view_application', id=application.id) }}" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ application.animal.name }}</h6>
+                                    <small class="text-muted">{{ application.created_at.strftime('%Y-%m-%d') }}</small>
+                                </div>
+                                <p class="mb-1">Status: <span class="badge bg-{{ 'success' if application.status == 'approved' else 'danger' if application.status == 'rejected' else 'warning' }}">{{ application.status|title }}</span></p>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No adoption applications yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Lost & Found Reports -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">My Lost & Found Reports</h5>
+                </div>
+                <div class="card-body">
+                    {% if lost_found_reports %}
+                        <div class="list-group">
+                            {% for report in lost_found_reports %}
+                            <a href="{{ url_for('lost_found.view_report', id=report.id) }}" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ report.animal_type|title }} - {{ report.report_type|title }}</h6>
+                                    <small class="text-muted">{{ report.created_at.strftime('%Y-%m-%d') }}</small>
+                                </div>
+                                <p class="mb-1">Location: {{ report.location }}</p>
+                                <small class="text-{{ 'success' if report.is_active else 'muted' }}">
+                                    {{ 'Active' if report.is_active else 'Closed' }}
+                                </small>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No lost & found reports yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if current_user.is_admin %}
+    <!-- Admin Section -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Admin Dashboard</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">Pending Applications</h6>
+                                    <p class="card-text display-4">{{ pending_applications_count }}</p>
+                                    <a href="{{ url_for('admin_panel.list_applications', status='pending') }}" class="btn btn-primary btn-sm">View All</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">Active Animals</h6>
+                                    <p class="card-text display-4">{{ available_animals_count }}</p>
+                                    <a href="{{ url_for('admin_panel.list_animals') }}" class="btn btn-primary btn-sm">Manage Animals</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">Active Reports</h6>
+                                    <p class="card-text display-4">{{ active_reports_count }}</p>
+                                    <a href="{{ url_for('admin_panel.list_reports') }}" class="btn btn-primary btn-sm">View Reports</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if current_user.is_volunteer %}
+    <h3>Мої тварини</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Кличка</th><th>Вид</th><th>Дії</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for animal in user_animals %}
+        <tr>
+          <td>{{ animal.name }}</td>
+          <td>{{ animal.species }}</td>
+          <td>
+            <a href="{{ url_for('adoption.animal_details', id=animal.id) }}" class="btn btn-info btn-sm">Переглянути</a>
+            {% if current_user.id == animal.user_id %}
+            <a href="{{ url_for('adoption.edit_animal', id=animal.id) }}" class="btn btn-warning btn-sm">Редагувати</a>
+            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ animal.id }}">Видалити</button>
+            <!-- Модальне вікно для підтвердження видалення -->
+            <div class="modal fade" id="deleteModal{{ animal.id }}" tabindex="-1">
+              <div class="modal-dialog"><div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Підтвердження видалення</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">Ви впевнені, що хочете видалити цю тварину?</div>
+                <div class="modal-footer">
+                  <form method="POST" action="{{ url_for('adoption.delete_animal', id=animal.id) }}">
+                    <button type="submit" class="btn btn-danger">Видалити</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                  </form>
+                </div>
+              </div></div>
+            </div>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h3>Заявки на моїх тварин
+      {% set new_count = my_applications|selectattr('status', 'equalto', 'pending')|list|length %}
+      {% if new_count > 0 %}
+        <span class="badge bg-danger">+{{ new_count }}</span>
+      {% endif %}
+    </h3>
+
+    <form method="get" class="mb-3">
+      <div class="row g-2 align-items-center">
+        <div class="col-auto">
+          <label for="status_filter" class="col-form-label">Фільтр за статусом:</label>
+        </div>
+        <div class="col-auto">
+          <select id="status_filter" name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">Всі</option>
+            <option value="pending" {% if request.args.get('status') == 'pending' %}selected{% endif %}>Очікує</option>
+            <option value="approved" {% if request.args.get('status') == 'approved' %}selected{% endif %}>Схвалено</option>
+            <option value="rejected" {% if request.args.get('status') == 'rejected' %}selected{% endif %}>Відхилено</option>
+          </select>
+        </div>
+      </div>
+    </form>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Тварина</th><th>Ім'я користувача</th><th>Контакти</th><th>Коментар</th><th>Статус</th><th>Дія</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for app in my_applications if not request.args.get('status') or app.status == request.args.get('status') %}
+        <tr>
+          <td>{{ app.animal.name }}</td>
+          <td>
+            {% if app.full_name %}{{ app.full_name }}<br>{% endif %}
+            {% if app.user %}
+              <small>{{ app.user.username }} ({{ app.user.email }})</small>
+            {% endif %}
+          </td>
+          <td>{{ app.email }}<br>{{ app.phone }}</td>
+          <td>{{ app.adoption_reason }}</td>
+          <td>
+            {% if app.status == 'pending' %}
+              <span class="badge bg-warning text-dark">Очікує</span>
+            {% elif app.status == 'approved' %}
+              <span class="badge bg-success">Схвалено</span>
+            {% elif app.status == 'rejected' %}
+              <span class="badge bg-danger">Відхилено</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if app.status == 'pending' %}
+            <form method="POST" action="{{ url_for('main.approve_application', id=app.id) }}" style="display:inline-block" onsubmit="return confirm('Ви дійсно хочете погодити цю заявку?');">
+              <button type="submit" class="btn btn-success btn-sm">Погодити</button>
+            </form>
+            <form method="POST" action="{{ url_for('main.reject_application', id=app.id) }}" style="display:inline-block" onsubmit="return confirm('Ви дійсно хочете відхилити цю заявку?');">
+              <button type="submit" class="btn btn-danger btn-sm">Відхилити</button>
+            </form>
+            {% else %}-{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+</div>
+{% endblock %} 

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Тварини - Адмін панель{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Тварини</h1>
+    {% if animals.items %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Ім'я</th>
+                    <th>Вид</th>
+                    <th>Порода</th>
+                    <th>Вік</th>
+                    <th>Стать</th>
+                    <th>Статус</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for animal in animals.items %}
+                <tr>
+                    <td>{{ animal.id }}</td>
+                    <td>{{ animal.name }}</td>
+                    <td>{{ animal.species }}</td>
+                    <td>{{ animal.breed }}</td>
+                    <td>{{ animal.age }}</td>
+                    <td>{{ animal.gender }}</td>
+                    <td>{{ animal.status }}</td>
+                    <td>
+                        <!-- Кнопка для відкриття модального вікна -->
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ animal.id }}">Видалити</button>
+                        <!-- Модальне вікно підтвердження -->
+                        <div class="modal fade" id="deleteModal{{ animal.id }}" tabindex="-1">
+                          <div class="modal-dialog"><div class="modal-content">
+                            <div class="modal-header"><h5 class="modal-title">Підтвердження видалення</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">Ви впевнені, що хочете видалити цю тварину?</div>
+                            <div class="modal-footer">
+                              <form method="POST" action="{{ url_for('adoption.delete_animal', id=animal.id) }}">
+                                <button type="submit" class="btn btn-danger">Видалити</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                              </form>
+                            </div>
+                          </div></div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p>Немає тварин для відображення.</p>
+    {% endif %}
+</div>
+{% endblock %} 

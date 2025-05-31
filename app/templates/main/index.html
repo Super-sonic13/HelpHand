@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Головна{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Ласкаво просимо до HelpHand</h2>
+                <p class="card-text">
+                    HelpHand — це інноваційна платформа, яка об'єднує людей, які хочуть допомогти тваринам знайти свій дім та повернути загублених улюбленців до їхніх родин. 
+                    Ми створюємо безпечний та зручний простір, де кожен може зробити свій внесок у покращення життя тварин.
+                </p>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Подаруйте дім улюбленцю</h5>
+                                <p class="card-text">Знайдіть свого нового друга серед наших підопічних. Кожна тварина чекає на вашу любов та турботу.</p>
+                                <a href="{{ url_for('adoption.list_animals') }}" class="btn btn-primary">Знайти друга</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Допоможіть знайти додому</h5>
+                                <p class="card-text">Разом ми можемо більше! Допоможіть повернути загублених улюбленців до їхніх родин або знайти новий дім для знайдених тварин.</p>
+                                <a href="{{ url_for('lost_found.list_reports') }}" class="btn btn-primary">Допомогти зараз</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Потрібна консультація?</h5>
+                <p class="card-text">Наш розумний помічник завжди готовий відповісти на ваші запитання про догляд за тваринами, процес усиновлення чи пошук улюбленця.</p>
+                <button class="btn btn-outline-primary" id="chatButton">Запитати помічника</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,91 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+footer {
+    margin-top: 2rem;
+    padding: 1rem 0;
+}
+
+.animal-card {
+    margin-bottom: 1.5rem;
+}
+
+.animal-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.event-card {
+    margin-bottom: 1rem;
+}
+
+.event-date {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.forum-post {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card {
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-stats {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 150px;
+    }
+    
+    .dashboard-stats {
+        font-size: 1.5rem;
+    }
+} 

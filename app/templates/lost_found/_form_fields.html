@@ -1,0 +1,128 @@
+<!-- Спільні поля форми для create/edit Lost & Found -->
+<!-- Report Type -->
+<div class="mb-4">
+    <label for="report_type" class="form-label fw-bold">Тип оголошення</label>
+    {{ form.report_type(class="form-select", id="report_type") }}
+    {% for error in form.report_type.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-4">
+    <label for="animal_type" class="form-label fw-bold">Тип тварини</label>
+    {{ form.animal_type(class="form-select", id="animal_type") }}
+    {% for error in form.animal_type.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-4">
+    <label for="name" class="form-label fw-bold">Кличка тварини (якщо відома)</label>
+    {{ form.name(class="form-control", placeholder="Введіть кличку тварини", id="name") }}
+    {% for error in form.name.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-4">
+    <label for="breed" class="form-label fw-bold">Порода (якщо відома)</label>
+    {{ form.breed(class="form-control", placeholder="Введіть породу тварини", id="breed") }}
+    {% for error in form.breed.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-4">
+    <label for="color" class="form-label fw-bold">Колір</label>
+    {{ form.color(class="form-control", placeholder="Опишіть колір тварини", id="color") }}
+    {% for error in form.color.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-4">
+    <label for="size" class="form-label fw-bold">Розмір</label>
+    {{ form.size(class="form-select", id="size") }}
+    {% for error in form.size.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-4">
+    <label for="gender" class="form-label fw-bold">Стать</label>
+    {{ form.gender(class="form-select", id="gender") }}
+    {% for error in form.gender.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-4">
+    <label for="last_seen_date" class="form-label fw-bold">Дата останньої зустрічі</label>
+    {{ form.last_seen_date(class="form-control", type="date", id="last_seen_date") }}
+    {% for error in form.last_seen_date.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-4">
+    <label for="location-input" class="form-label fw-bold">Місце</label>
+    {{ form.location(class="form-control", placeholder="Введіть місце, де загубили/знайшли тварину", id="location-input") }}
+    {% for error in form.location.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+    <div id="map" class="mt-2" style="height: 300px;"></div>
+</div>
+<div class="mb-4">
+    <label for="description" class="form-label fw-bold">Опис</label>
+    {{ form.description(class="form-control", rows=4, placeholder="Опишіть деталі про тварину та ситуацію", id="description") }}
+    {% for error in form.description.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-4">
+    <label for="image" class="form-label fw-bold">Фото</label>
+    {{ form.image(class="form-control", accept="image/*", id="image") }}
+    {% for error in form.image.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-4">
+    <label class="form-label fw-bold" for="additional_info_group">Додаткова інформація</label>
+    <div class="d-flex gap-4" id="additional_info_group">
+        <div class="form-check">
+            {{ form.has_collar(class="form-check-input", id="has_collar") }}
+            <label class="form-check-label" for="has_collar">
+                <i class="fas fa-collar me-2"></i>Є нашийник
+            </label>
+        </div>
+        <div class="form-check">
+            {{ form.is_microchipped(class="form-check-input", id="is_microchipped") }}
+            <label class="form-check-label" for="is_microchipped">
+                <i class="fas fa-microchip me-2"></i>Є мікрочіп
+            </label>
+        </div>
+    </div>
+</div>
+<div class="mb-4">
+    <label for="special_needs" class="form-label fw-bold">Особливі потреби</label>
+    {{ form.special_needs(class="form-control", rows=2, placeholder="Опишіть особливі потреби тварини, якщо такі є", id="special_needs") }}
+    {% for error in form.special_needs.errors %}
+        <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+</div>
+<div class="mb-4">
+    <h5 class="fw-bold mb-3">Контактна інформація</h5>
+    <div class="mb-3">
+        <label for="contact_name" class="form-label">Ім'я контактної особи</label>
+        {{ form.contact_name(class="form-control", placeholder="Введіть ваше ім'я", id="contact_name") }}
+        {% for error in form.contact_name.errors %}
+            <div class="text-danger small mt-1">{{ error }}</div>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        <label for="contact_email" class="form-label">Email</label>
+        {{ form.contact_email(class="form-control", placeholder="Введіть ваш email", id="contact_email") }}
+        {% for error in form.contact_email.errors %}
+            <div class="text-danger small mt-1">{{ error }}</div>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        <label for="contact_phone" class="form-label">Телефон</label>
+        {{ form.contact_phone(class="form-control", placeholder="Введіть ваш номер телефону", id="contact_phone") }}
+        {% for error in form.contact_phone.errors %}
+            <div class="text-danger small mt-1">{{ error }}</div>
+        {% endfor %}
+    </div>
+</div> 

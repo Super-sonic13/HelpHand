@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Загублено' if report.report_type == 'lost' else 'Знайдено' }} - {{ report.animal_type|title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Back Button -->
+            <div class="mb-4">
+                <a href="{{ url_for('lost_found.list_reports') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Назад до списку
+                </a>
+            </div>
+
+            <!-- Main Card -->
+            <div class="card shadow-sm">
+                <!-- Status Badge -->
+                <div class="position-absolute top-0 end-0 m-3">
+                    <span class="badge {% if report.is_active %}bg-success{% else %}bg-secondary{% endif %} p-2">
+                        {{ 'Активний' if report.is_active else 'Завершено' }}
+                        </span>
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Header -->
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <h1 class="h2 mb-2">
+                                {{ report.animal_type|title }}
+                                {% if report.name %}- {{ report.name }}{% endif %}
+                            </h1>
+                            <div class="d-flex align-items-center text-muted mb-3">
+                                <span class="badge {% if report.report_type == 'lost' %}bg-danger{% else %}bg-success{% endif %} me-2">
+                                    {{ 'Загублено' if report.report_type == 'lost' else 'Знайдено' }}
+                                </span>
+                                <small>
+                                    <i class="far fa-clock me-1"></i>
+                                    {{ report.created_at.strftime('%d.%m.%Y %H:%M') }}
+                                </small>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="row">
+                        <!-- Image Column -->
+                        <div class="col-md-5 mb-4 mb-md-0">
+                            {% if report.image_url %}
+                                <img src="{{ report.image_url }}" class="img-fluid rounded" alt="Фото тварини">
+                            {% else %}
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 300px;">
+                                    <i class="fas fa-paw fa-4x text-muted"></i>
+                    </div>
+                    {% endif %}
+                        </div>
+
+                        <!-- Details Column -->
+                        <div class="col-md-7">
+                            <!-- Description -->
+                    <div class="mb-4">
+                                <h5 class="border-bottom pb-2">Опис</h5>
+                                <p class="mb-0">{{ report.description }}</p>
+                    </div>
+
+                            <!-- Animal Details -->
+                    <div class="mb-4">
+                                <h5 class="border-bottom pb-2">Інформація про тварину</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="mb-2">
+                                            <strong>Вид:</strong> {{ report.animal_type|title }}
+                                        </p>
+                                        {% if report.breed %}
+                                            <p class="mb-2">
+                                                <strong>Порода:</strong> {{ report.breed }}
+                                            </p>
+                                        {% endif %}
+                                        <p class="mb-2">
+                                            <strong>Колір:</strong> {{ report.color }}
+                                        </p>
+                                        <p class="mb-2">
+                                            <strong>Розмір:</strong> {{ report.size|title }}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-2">
+                                            <strong>Нашийник:</strong> {{ 'Так' if report.has_collar else 'Ні' }}
+                                        </p>
+                                        <p class="mb-2">
+                                            <strong>Мікрочіп:</strong> {{ 'Так' if report.is_microchipped else 'Ні' }}
+                                        </p>
+                                        {% if report.special_needs %}
+                                            <p class="mb-2">
+                                                <strong>Особливі потреби:</strong> {{ report.special_needs }}
+                                            </p>
+                        {% endif %}
+                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Location -->
+                            <div class="mb-4">
+                                <h5 class="border-bottom pb-2">Місце</h5>
+                                <p class="mb-2">
+                                    <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                    {{ report.location }}
+                                </p>
+                                <p class="mb-0">
+                                    <i class="far fa-calendar-alt text-primary me-2"></i>
+                                    {{ report.last_seen_date.strftime('%d.%m.%Y') }}
+                                </p>
+                            </div>
+
+                            <!-- Contact Information -->
+                            <div class="mb-4">
+                                <h5 class="border-bottom pb-2">Контактна інформація</h5>
+                                <p class="mb-2">
+                                    <i class="fas fa-user text-primary me-2"></i>
+                                    {{ report.contact_name }}
+                                </p>
+                                <p class="mb-2">
+                                    <i class="fas fa-phone text-primary me-2"></i>
+                                    {{ report.contact_phone }}
+                                </p>
+                                <p class="mb-0">
+                                    <i class="fas fa-envelope text-primary me-2"></i>
+                                    {{ report.contact_email }}
+                                </p>
+                </div>
+            </div>
+        </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-4 pt-3 border-top">
+                {% if current_user.is_authenticated and (current_user.id == report.user_id or current_user.is_admin) %}
+                    <div class="d-flex gap-2">
+                        <a href="{{ url_for('lost_found.edit_report', id=report.id) }}" class="btn btn-primary">
+                            <i class="fas fa-edit me-2"></i>Редагувати
+                        </a>
+                        <form method="POST" action="{{ url_for('lost_found.delete_report', id=report.id) }}" class="d-inline">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Ви впевнені, що хочете видалити цей звіт?')">
+                                <i class="fas fa-trash-alt me-2"></i>Видалити
+                            </button>
+                        </form>
+                        {% if report.is_active %}
+                            <form method="POST" action="{{ url_for('lost_found.resolve_report', id=report.id) }}" class="d-inline">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-check me-2"></i>Позначити як завершений
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if current_user.is_authenticated and current_user.id != report.user_id and report.is_active %}
+                    <a href="{{ url_for('lost_found.respond_to_report', id=report.id) }}" class="btn btn-info float-end">
+                        <i class="fas fa-reply me-2"></i>Відповісти
+                    </a>
+                {% endif %}
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

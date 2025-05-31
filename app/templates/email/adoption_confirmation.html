@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <title>Підтвердження заявки на адопцію</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #4CAF50; color: white; padding: 20px; text-align: center; }
+        .content { padding: 20px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .pet-info { background-color: #f9f9f9; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .contact-info { background-color: #f0f0f0; padding: 15px; margin: 15px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Adoption Application Confirmation</h1>
+        </div>
+        
+        <div class="content">
+            <p>Dear {{ user.username }},</p>
+            
+            <p>Thank you for your interest in adopting {{ animal.name }}! We have received your adoption application and are excited to help you through this process.</p>
+            
+            <div class="pet-info">
+                <h2>Pet Information:</h2>
+                <ul>
+                    <li><strong>Name:</strong> {{ animal.name }}</li>
+                    <li><strong>Species:</strong> {{ animal.species }}</li>
+                    <li><strong>Breed:</strong> {{ animal.breed or 'Mixed/Unknown' }}</li>
+                    <li><strong>Age:</strong> {{ animal.age }}</li>
+                    <li><strong>Gender:</strong> {{ animal.gender }}</li>
+                </ul>
+            </div>
+            
+            <div class="contact-info">
+                <h2>Contact Information:</h2>
+                <p>You can contact the shelter staff or current caretaker using the following information:</p>
+                <ul>
+                    <li><strong>Name:</strong> {{ contact_name }}</li>
+                    <li><strong>Email:</strong> {{ contact_email }}</li>
+                    {% if contact_phone %}
+                    <li><strong>Phone:</strong> {{ contact_phone }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+            <p>Next Steps:</p>
+            <ol>
+                <li>The shelter staff will review your application</li>
+                <li>We will contact you to schedule a meet-and-greet with {{ animal.name }}</li>
+                <li>If everything goes well, we'll proceed with the adoption process</li>
+            </ol>
+            
+            <p>If you have any questions, please don't hesitate to contact us using the information above.</p>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated message. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html> 

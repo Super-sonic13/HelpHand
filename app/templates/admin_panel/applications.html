@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Adoption Applications</h1>
+    
+    <div class="table-responsive mt-4">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Animal</th>
+                    <th>Applicant</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications.items %}
+                <tr>
+                    <td>{{ application.id }}</td>
+                    <td>
+                        <a href="{{ url_for('adoption.animal_details', id=application.animal.id) }}">
+                            {{ application.animal.name }}
+                        </a>
+                    </td>
+                    <td>{{ application.user.username }}</td>
+                    <td>
+                        <select class="form-select form-select-sm status-select" data-application-id="{{ application.id }}">
+                            {% for status in ['pending', 'approved', 'rejected'] %}
+                            <option value="{{ status }}" {% if application.status == status %}selected{% endif %}>
+                                {{ status|title }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>{{ application.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td>
+                        <a href="{{ url_for('adoption.view_application', id=application.id) }}" class="btn btn-sm btn-info">
+                            View Details
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Pagination -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if applications.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('admin_panel.applications', page=applications.prev_num) }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            {% for page in applications.iter_pages() %}
+                {% if page %}
+                    <li class="page-item {% if page == applications.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin_panel.applications', page=page) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if applications.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('admin_panel.applications', page=applications.next_num) }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+{% block scripts %}
+<script>
+document.querySelectorAll('.status-select').forEach(select => {
+    select.addEventListener('change', function() {
+        const applicationId = this.dataset.applicationId;
+        const newStatus = this.value;
+        
+        fetch(`/admin-panel/application/${applicationId}/status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `status=${newStatus}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert('Status updated successfully');
+            } else {
+                alert('Error updating status');
+                this.value = this.dataset.originalStatus;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error updating status');
+            this.value = this.dataset.originalStatus;
+        });
+    });
+});
+</script>
+{% endblock %}
+{% endblock %} 

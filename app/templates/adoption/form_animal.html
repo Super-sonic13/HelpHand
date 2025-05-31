@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Редагувати тварину' if is_edit else 'Додати тварину для адопції' }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">{{ 'Редагувати тварину' if is_edit else 'Додати тварину для адопції' }}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2 text-success">Основна інформація</h5>
+                            <div class="mb-3">
+                                <label for="animal_name">Ім'я тварини</label>
+                                {{ form.name(class="form-control", id="animal_name") }}
+                                {% for error in form.name.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="animal_species">Вид тварини</label>
+                                {{ form.species(class="form-select", id="animal_species") }}
+                                {% for error in form.species.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="animal_breed">Порода тварини</label>
+                                {{ form.breed(class="form-control", id="animal_breed") }}
+                                {% for error in form.breed.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="animal_age">Вік тварини</label>
+                                {{ form.age(class="form-select", id="animal_age") }}
+                                {% for error in form.age.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="animal_gender">Стать тварини</label>
+                                {{ form.gender(class="form-select", id="animal_gender") }}
+                                {% for error in form.gender.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="animal_size">Розмір тварини</label>
+                                {{ form.size(class="form-select", id="animal_size") }}
+                                {% for error in form.size.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2 text-success">Додаткова інформація</h5>
+                            <div class="mb-3">
+                                <label for="animal_description">Опис тварини</label>
+                                {{ form.description(class="form-control", rows=4, id="animal_description") }}
+                                {% for error in form.description.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <label for="animal_good_with_children">Добрий з дітьми</label>
+                                        {{ form.good_with_children(class="form-check-input", id="animal_good_with_children") }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <label for="animal_good_with_other_animals">Добрий з іншими тваринами</label>
+                                        {{ form.good_with_other_animals(class="form-check-input", id="animal_good_with_other_animals") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2 text-success">Фотографія</h5>
+                            {% if is_edit and animal and animal.image_url %}
+                            <div class="mb-3">
+                                <label class="form-label" for="current_animal_image">Поточне фото</label>
+                                <div>
+                                    <img src="{{ animal.image_url }}" class="img-fluid rounded" alt="Фото тварини" id="current_animal_image" style="max-height: 200px;">
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="mb-3">
+                                <label for="animal_image">Фото тварини</label>
+                                {{ form.image(class="form-control", id="animal_image") }}
+                                {% for error in form.image.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary", value=("Оновити" if is_edit else "Додати")) }}
+                            <a href="{{ url_for('adoption.list_animals') }}" class="btn btn-secondary">Скасувати</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

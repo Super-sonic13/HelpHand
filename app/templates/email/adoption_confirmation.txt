@@ -1,0 +1,30 @@
+Dear {{ user.username }},
+
+Thank you for your interest in adopting {{ animal.name }}! We have received your adoption application and are excited to help you through this process.
+
+Pet Information:
+- Name: {{ animal.name }}
+- Species: {{ animal.species }}
+- Breed: {{ animal.breed or 'Mixed/Unknown' }}
+- Age: {{ animal.age }}
+- Gender: {{ animal.gender }}
+
+Contact Information:
+You can contact the shelter staff or current caretaker using the following information:
+- Name: {{ contact_name }}
+- Email: {{ contact_email }}
+{% if contact_phone %}
+- Phone: {{ contact_phone }}
+{% endif %}
+
+Next Steps:
+1. The shelter staff will review your application
+2. We will contact you to schedule a meet-and-greet with {{ animal.name }}
+3. If everything goes well, we'll proceed with the adoption process
+
+If you have any questions, please don't hesitate to contact us using the information above.
+
+Best regards,
+Animal Lover Team
+
+Note: This is an automated message. Please do not reply to this email. 

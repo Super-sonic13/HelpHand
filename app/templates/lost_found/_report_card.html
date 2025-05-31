@@ -1,0 +1,18 @@
+<!-- Картка оголошення Lost & Found -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="card-title mb-0">
+                {{ report.animal_type|title }}
+                {% if report.name %}- {{ report.name }}{% endif %}
+            </h5>
+            <span class="badge {% if report.report_type == 'lost' %}bg-danger{% else %}bg-success{% endif %}">
+                {{ 'Загублено' if report.report_type == 'lost' else 'Знайдено' }}
+            </span>
+        </div>
+        <p class="text-muted mb-2">
+            <i class="fas fa-map-marker-alt me-2"></i>{{ report.location }}
+        </p>
+        <p class="card-text">{{ report.description }}</p>
+    </div>
+</div> 

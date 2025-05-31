@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Деталі заявки{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Деталі заявки</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2 text-success">Статус заявки</h5>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="badge 
+                                {% if application.status == 'approved' %}bg-success
+                                {% elif application.status == 'rejected' %}bg-danger
+                                {% else %}bg-warning text-dark{% endif %}">
+                                {% if application.status == 'approved' %}Схвалено
+                                {% elif application.status == 'rejected' %}Відхилено
+                                {% else %}Очікує{% endif %}
+                            </span>
+                            <small class="text-muted ms-3">{{ application.created_at.strftime('%d.%m.%Y %H:%M') }}</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2 text-success">Інформація про тварину</h5>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="{{ application.animal.image_url }}" class="img-fluid rounded" alt="{{ application.animal.name }}">
+                            </div>
+                            <div class="col-md-8">
+                                <h5>{{ application.animal.name }}</h5>
+                                <p>{{ application.animal.species }} • {{ application.animal.breed }}</p>
+                                <p>{{ application.animal.description }}</p>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2 text-success">Інформація про заявника</h5>
+                        <div class="row">
+                        <div class="col-md-6">
+                                <p><strong>Ім'я:</strong> {{ application.full_name }}</p>
+                            <p><strong>Email:</strong> {{ application.email }}</p>
+                                <p><strong>Телефон:</strong> {{ application.phone }}</p>
+                        </div>
+                        <div class="col-md-6">
+                                <p><strong>Адреса:</strong> {{ application.address }}</p>
+                                <p><strong>Місто:</strong> {{ application.city }}</p>
+                                <p><strong>Поштовий індекс:</strong> {{ application.postal_code }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2 text-success">Деталі заявки</h5>
+                        <div class="row">
+                        <div class="col-md-6">
+                                <p><strong>Тип житла:</strong> {{ application.housing_type }}</p>
+                                <p><strong>Дозвіл власника:</strong> {{ application.landlord_permission }}</p>
+                                <p><strong>Наявність двору:</strong> {{ application.yard }}</p>
+                        </div>
+                        <div class="col-md-6">
+                                <p><strong>Попередні тварини:</strong> {{ application.previous_pets }}</p>
+                                <p><strong>Поточні тварини:</strong> {{ application.current_pets }}</p>
+                                <p><strong>Ветеринар:</strong> {{ application.vet_reference }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2 text-success">Додаткова інформація</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Причина адопції:</strong></p>
+                                <p>{{ application.adoption_reason }}</p>
+                    </div>
+                            <div class="col-md-6">
+                                <p><strong>План догляду:</strong></p>
+                        <p>{{ application.care_plan }}</p>
+                    </div>
+                        </div>
+                    </div>
+
+                    {% if current_user.is_admin %}
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2 text-success">Дії адміністратора</h5>
+                        <form method="POST" class="d-inline">
+                            {{ form.hidden_tag() }}
+                            <div class="mb-3">
+                                {{ form.status.label(class="form-label") }}
+                                {{ form.status(class="form-select") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.notes.label(class="form-label") }}
+                                {{ form.notes(class="form-control", rows=3) }}
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success">Оновити статус</button>
+                            </div>
+                        </form>
+                    </div>
+                    {% endif %}
+
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('adoption.my_applications') }}" class="btn btn-secondary">Назад до списку</a>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
