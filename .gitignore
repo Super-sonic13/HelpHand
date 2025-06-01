@@ -14,4 +14,3 @@ migrations/
 .docker/
 docker-compose.yml
 Dockerfile
- 
