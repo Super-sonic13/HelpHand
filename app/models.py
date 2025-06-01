@@ -22,7 +22,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
-    role = db.Column(db.String(20), default=UserRole.USER.value, nullable=False)
+    role = db.Column(db.String(20), default='user')
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     last_response_read_time = db.Column(db.DateTime, default=datetime.utcnow)

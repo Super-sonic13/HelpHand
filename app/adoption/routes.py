@@ -235,7 +235,7 @@ def notify_applicant(current_user, animal, contact_info):
 
 def notify_volunteer(animal, application):
     try:
-        if animal.user and animal.user.email:
+        if animal.owner and animal.owner.email:
             from app.email import send_email
             subject = f"Нова заявка на адопцію для {animal.name}"
             text_body = (
@@ -246,7 +246,7 @@ def notify_volunteer(animal, application):
                 f"Причина адопції: {application.adoption_reason}\n\n"
                 "Перейдіть у кабінет для підтвердження або відмови."
             )
-            send_email(subject, current_app.config['MAIL_USERNAME'], [animal.user.email], text_body)
+            send_email(subject, current_app.config['MAIL_USERNAME'], [animal.owner.email], text_body)
     except Exception as email_error:
         current_app.logger.error(f"Failed to send volunteer notification email: {str(email_error)}")
 
@@ -300,11 +300,12 @@ def reserve_animal(id):
         db.session.add(application)
         db.session.commit()
         contact_info = {
-            'name': animal.user.username if animal.user else 'Shelter Staff',
-            'email': animal.user.email if animal.user else current_app.config['MAIL_USERNAME'],
-            'phone': animal.user.phone if animal.user and hasattr(animal.user, 'phone') else 'Not available'
+            'name': animal.owner.username if animal.owner else 'Shelter Staff',
+            'email': animal.owner.email if animal.owner else current_app.config['MAIL_USERNAME'],
+            'phone': animal.owner.phone if animal.owner and hasattr(animal.owner, 'phone') else 'Not available'
         }
         notify_applicant(current_user, animal, contact_info)
         notify_volunteer(animal, application)
         flash('Ваша заявка на усиновлення успішно подана!', 'success')
-        return redirect(url_for(ANIMAL_DETAILS_ENDPOINT, id=id)) 
+        return redirect(url_for(ANIMAL_DETAILS_ENDPOINT, id=id))
+    return render_template('adoption/reserve.html', animal=animal, form=form) 
