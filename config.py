@@ -37,11 +37,8 @@ class Config:
     ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL') or 'admin@example.com'
     ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD') or 'admin'
     
-    # Конфігурація OpenAI
-    OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
-    OPENAI_MODEL = "gpt-3.5-turbo"  # або "gpt-4" якщо є доступ
-    
-    # Конфігурація чат-бота
+    # Конфігурація чат-бота (Gemini)
+    GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
     CHATBOT_FALLBACK_MESSAGE = "Вибачте, я не можу відповісти на це питання. Будь ласка, зверніться до адміністратора."
     CHATBOT_MAX_TOKENS = 150
     CHATBOT_TEMPERATURE = 0.7

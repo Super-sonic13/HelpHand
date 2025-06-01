@@ -30,7 +30,7 @@
                         {% if animal.good_with_children is not none %}<li class="list-group-item"><strong>Добре з дітьми:</strong> {{ 'Так' if animal.good_with_children else 'Ні' }}</li>{% endif %}
                         {% if animal.good_with_other_animals is not none %}<li class="list-group-item"><strong>Добре з іншими тваринами:</strong> {{ 'Так' if animal.good_with_other_animals else 'Ні' }}</li>{% endif %}
                         {% if animal.description %}<li class="list-group-item"><strong>Опис:</strong> {{ animal.description }}</li>{% endif %}
-                    </ul>
+                </ul>
             <div class="mt-4">
                         {% if current_user.is_authenticated and current_user.id == animal.user_id %}
                             <a href="{{ url_for('adoption.edit_animal', id=animal.id) }}" class="btn btn-warning">Редагувати</a>

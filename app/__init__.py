@@ -60,13 +60,11 @@ def create_app(config_class=Config):
         app.register_blueprint(chatbot_bp, url_prefix='/chatbot')
         
         from app.admin_panel import bp as admin_bp
-        app.register_blueprint(admin_bp, url_prefix='/admin')
-        
-        # Реєстрація CLI команд
+        app.register_blueprint(admin_bp, url_prefix='/admin-panel')
+    
         from app.cli import register_commands
         register_commands(app)
         
-        # Ініціалізація бази даних
         from app import models
         db.create_all()
 
